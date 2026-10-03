@@ -4,16 +4,9 @@ import 'package:command_runner/command_runner.dart';
 
 const version = '0.0.1';
 
-void main(List<String> arguments) async {
-  final verboseOption = Option(
-    'verbase',
-    type: OptionType.flag,
-    abbr: 'v',
-    help: 'Display extra logging information.',
-  );
-  
-  print('Defined option: ${verboseOption.name}');
-  print('Usage: ${verboseOption.usage}');
+void main(List<String> arguments) {
+  var commandRunner = CommandRunner()..addCommand(HelpCommand());
+  commandRunner.run(arguments);
 
   // var runner = CommandRunner();
   // await runner.run(arguments);
@@ -30,45 +23,45 @@ void main(List<String> arguments) async {
   // }
 }
 
-void searchWikipedia(List<String>? arguments) async {
-  final String articleTitle;
+// void searchWikipedia(List<String>? arguments) async {
+//   final String articleTitle;
 
-  // If the user didn't pass in arguments, request an article title.
-  if (arguments == null || arguments.isEmpty) {
-    print('Please provide an article title.');
-    // Await input and provide a default empty string if the input is null.
-    final inputFromStdin = stdin.readLineSync() ?? '';
-    if(inputFromStdin == null || inputFromStdin.isEmpty){
-      print('No article title provided. Exiting.');
-      return;
-    }
-    articleTitle = inputFromStdin;
-  } else {
-    // Otherwise, join the arguments into a single string.
-    articleTitle = arguments.join(' ');
-  }
+//   // If the user didn't pass in arguments, request an article title.
+//   if (arguments == null || arguments.isEmpty) {
+//     print('Please provide an article title.');
+//     // Await input and provide a default empty string if the input is null.
+//     final inputFromStdin = stdin.readLineSync() ?? '';
+//     if(inputFromStdin == null || inputFromStdin.isEmpty){
+//       print('No article title provided. Exiting.');
+//       return;
+//     }
+//     articleTitle = inputFromStdin;
+//   } else {
+//     // Otherwise, join the arguments into a single string.
+//     articleTitle = arguments.join(' ');
+//   }
 
-  print('Looking up articles about "$articleTitle". Please wait.');
-  var articleContent = await getWikipediaArticle(articleTitle);
-  print(articleContent);
-}
+//   print('Looking up articles about "$articleTitle". Please wait.');
+//   var articleContent = await getWikipediaArticle(articleTitle);
+//   print(articleContent);
+// }
 
-void printUsage() {
-  print(
-    "The following commands are valid: 'help', 'version', 'search <ARTICLE-TITLE>'",
-  );
-}
+// void printUsage() {
+//   print(
+//     "The following commands are valid: 'help', 'version', 'search <ARTICLE-TITLE>'",
+//   );
+// }
 
-Future<String> getWikipediaArticle(String articleTitle) async{
-  final url = Uri.https(
-    'en.wikipedia.org',
-    '/api/rest_v1/page/summary/$articleTitle', 
-  );
-  final response = await http.get(url);
+// Future<String> getWikipediaArticle(String articleTitle) async{
+//   final url = Uri.https(
+//     'en.wikipedia.org',
+//     '/api/rest_v1/page/summary/$articleTitle', 
+//   );
+//   final response = await http.get(url);
 
-  if(response.statusCode == 200){
-    return response.body;
-  } 
+//   if(response.statusCode == 200){
+//     return response.body;
+//   } 
 
-  return 'Error: Failed to fetch article "$articleTitle". Status code: ${response.statusCode}';
-}
+//   return 'Error: Failed to fetch article "$articleTitle". Status code: ${response.statusCode}';
+// }
